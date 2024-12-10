@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Add new Performer to Song</title>
+  <style type = "text/css">
+    body {
+      width: 800px;
+      margin: auto;
+    }
+    table {
+      width:100%;
+    }
+    table, td, th {
+      border: 1px solid black;
+      padding:3px 2px;
+    }
+    section {
+      float: left;
+      margin: 0 1.5%;
+      width: 63%;
+    }
+    aside {
+      float: right;
+      margin: 0 1.5%;
+      width: 30%;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Select the Artist to add to the List of Performers </h1>
+</header>
+<section>
+  <h2>Select artist:</h2>
+  <!-- Make changes to this code to dynamically display radio buttons for each artist as in the example -->
+  <form>
+
+    <div th:each="song : ${songs}">
+      <input type="radio" name="trackId" th:value="${song.trackId}"
+             th:text="'Title: ' + ${song.title} + ', Genre: ' + ${song.genre} + ', Release Year: ' + ${song.releaseYear}"><br/>
+    </div>
+    <br/>
+  </form>
+
+
+</section>
+
+</body>
+</html>

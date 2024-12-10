@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new song</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/songs/add}">
+  <input id="trackId" type="hidden" name="trackId"
+         th:value="(${song} != null ? ${song.getTrackId()} : '')">
+  <div class="form-group">
+    <label for="title">Song title</label>
+    <input type="text"
+           class="form-control"
+           id="title"
+           name="title"
+           th:value="(${song} != null ? ${song.getTitle()} : '')"
+           required
+           placeholder="Enter song title">
+  </div>
+  <div class="form-group">
+    <label for="genre">Genre</label>
+    <input type="text"
+           class="form-control"
+           id="genre"
+           name="genre"
+           th:value="(${song} != null ? ${song.getGenre()} : '')"
+           placeholder="Genre">
+  </div>
+  <div class="form-group">
+    <label for="releaseYear">Release year</label>
+    <input type="text"
+           class="form-control"
+           id="releaseYear"
+           name="releaseYear"
+           th:value="(${song} != null ? ${song.getReleaseYear()} : '')"
+           placeholder="Release year">
+  </div>
+  <div class="form-group">
+    <label>Album</label>
+    <select name="albumId" class="form-control">
+      <option th:if="${song} != null"
+              th:selected="${song.getAlbum() != null && song.getAlbum().getId() == album.id}"
+              th:each="album : ${albums}"
+              th:value="${album.id}"
+              th:text="${album.name}">
+      </option>
+      <option th:if="${song} == null"
+      th:each="album : ${albums}"
+        th:value="${album.getId()}"
+        th:text="${album.getName()}">
+      </option>
+    </select>
+  </div>
+  <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+  <a type="button" class="btn btn-primary" href="/songs">Back</a>
+</form>
+
+</body>
+</html>
