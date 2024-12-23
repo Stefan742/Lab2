@@ -3,59 +3,146 @@
 <head>
     <meta charset="utf-8">
     <title>Add new Performer to Song</title>
-    <style type = "text/css">
+    <style type="text/css">
         body {
-            width: 800px;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            width: 80%;
             margin: auto;
+            padding: 20px;
         }
-        table {
-            width:100%;
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
         }
-        table, td, th {
-            border: 1px solid black;
-            padding:3px 2px;
+
+        h1 {
+            font-size: 36px;
+            color: #2c3e50;
+            margin-bottom: 10px;
         }
+
         section {
             float: left;
-            margin: 0 1.5%;
             width: 63%;
+            padding-right: 20px;
         }
+
         aside {
             float: right;
-            margin: 0 1.5%;
             width: 30%;
+            background-color: white;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, td, th {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .form-control:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        .track-info td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        .track-info th {
+            text-align: center;
+            background-color: #ecf0f1;
         }
     </style>
 </head>
 <body>
 <header>
-    <h1>Select the Artist to add to the List of Performers </h1>
+    <h1>Select the Artist to add to the List of Performers</h1>
 </header>
 <section>
     <h2>Select artist:</h2>
-    <!-- Make changes to this code to dynamically display radio buttons for each artist as in the example -->
+    <!-- Form for selecting an artist to add -->
     <form th:method="POST" th:action="@{/songDetails}">
         <input type="hidden" name="trackId" th:value="${trackId}">
+
+        <!-- Iterate through the listed artists and display radio buttons -->
         <div th:each="artist : ${listedArtists}">
-            <input type="radio" name="artistId" th:id="${artist.getId()}" th:value="${artist.getId()}" />
+            <input type="radio" name="artistId" th:id="${artist.getId()}" th:value="${artist.getId()}"/>
             <label th:for="${artist.getId()}" th:text="${artist.getFirstName()} + ' ' + ${artist.getLastName()}"></label>
+            <br/>
         </div>
-        <br/>
-        <input type='submit' value='Add artist'>
+
+        <input type="submit" value="Add artist">
     </form>
-
-
-
-
 </section>
 <aside>
-    <table>
+    <table class="track-info">
         <tr>
-            <!-- change to show selected trackId -->
-            <td><b>Track Id</b></td>
-            <td th:text="${trackId}" th:value="${trackId}"></td>
-            <td><b>Artist Id</b></td>
-            <td th:text="${artistId}" th:value="${artistId}"></td>
+            <th>Track Id</th>
+            <th>Artist Id</th>
+        </tr>
+        <tr>
+            <td th:text="${trackId}"></td>
+            <td th:text="${artistId}"></td>
         </tr>
     </table>
 </aside>

@@ -1,12 +1,150 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Songs Homepage - Welcome to My Music Store</title>
     <style type="text/css">
         body {
-            width: 800px;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            width: 80%;
             margin: auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-top: 30px;
+            text-decoration: underline;
+        }
+
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Inline layout for the search and add new song button */
+        .search-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .search-container form {
+            margin-right: 20px;
+        }
+
+        .search-container button, .search-container input {
+            font-size: 16px;
+        }
+
+        /* Style for the "Add new song" button */
+        .add-song-button {
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        input[type="text"], input[type="number"] {
+            padding: 8px;
+            width: 200px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #27ae60;
+        }
+
+        label {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .song-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .song-item:hover {
+            background-color: #bdc3c7;
+        }
+
+        .song-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .song-actions a {
+            text-decoration: none;
+        }
+
+        .song-actions button {
+            background-color: #e74c3c;
+            font-size: 14px;
+        }
+
+        .song-actions button:hover {
+            background-color: #c0392b;
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+        }
+
+        .form-container input[type="submit"] {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -15,26 +153,50 @@
     <h1>Welcome to My Music Store</h1>
 </header>
 <main>
-    <h2>Add a new song:</h2>
-    <a th:href="@{/songs/add-form}">
-        <button type="button">Add new song</button>
-    </a>
+    <div class="search-container">
+        <div class="add-song-button" sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/songs/add-form}">
+                <button type="button">Add new song</button>
+            </a>
+        </div>
+        <div>
+            <form method="post" th:action="@{/songs/search}" style="display: inline;">
+                <h2>Search Song by Album</h2>
+                <input type="text" name="albumName" placeholder="Search by album...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div>
+            <form method="post" th:action="@{/songs/searchYear}" style="display: inline;">
+                <h2>Search Song by Release Year</h2>
+                <input type="number" name="albumYear" placeholder="Search by release year...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </div>
     <h2>Choose a song:</h2>
     <form th:method="POST" th:action="@{/artist}">
         <div th:each="song : ${songs}">
-            <label>
-                <input type="radio" name="trackId" th:value="${song.trackId}" />
-                <span th:text="${song.title}"> </span>, <span th:text="${song.genre}"></span>, <span th:text="${song.releaseYear}"></span>, <span th:text="${song.album.name}"></span>
-            </label>
-            <br/>
-            <a th:href="@{/songs/delete/{id}(id=${song.trackId})}">
-                <button type="button">Delete song</button>
-            </a>
-            <br/>
-            <a th:href="@{/songs/edit-form/{id}(id=${song.trackId})}">
-                <button type="button">Edit song</button>
-            </a>
-            <br/><br/>
+            <div class="song-item">
+                <div>
+                    <label>
+                        <input type="radio" name="trackId" th:value="${song.trackId}" />
+                        <span th:text="${song.title}"> </span>, <span th:text="${song.genre}"></span>,
+                        <span th:text="${song.releaseYear}"></span>,
+                        <span th:text="${song.album.name}"></span>
+                    </label>
+                </div>
+
+                <div class="song-actions" sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{/songs/delete/{id}(id=${song.trackId})}">
+                        <button type="button">Delete song</button>
+                    </a>
+
+                    <a th:href="@{/songs/edit-form/{id}(id=${song.trackId})}">
+                        <button type="button" style="background-color: #2c3e50">Edit song</button>
+                    </a>
+                </div>
+            </div>
         </div>
         <input type="submit" value="Submit">
     </form>

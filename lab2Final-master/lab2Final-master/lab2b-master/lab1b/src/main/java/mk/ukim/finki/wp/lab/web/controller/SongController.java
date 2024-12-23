@@ -8,6 +8,7 @@ import mk.ukim.finki.wp.lab.model.exceptions.InvalidAlbumIdException;
 import mk.ukim.finki.wp.lab.service.AlbumService;
 import mk.ukim.finki.wp.lab.service.ArtistService;
 import mk.ukim.finki.wp.lab.service.SongService;
+import org.h2.engine.Mode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -112,6 +113,7 @@ public class SongController {
     }
     @PostMapping("/songDetails")
     public String songDetails(@RequestParam Long trackId, @RequestParam Long artistId, Model model) {
+
         Song song = songService.findSongById(trackId);
         Artist artist = artistService.findById(artistId)
                 .orElseThrow(() -> new RuntimeException("Artist not found with id: " + artistId));
@@ -124,8 +126,19 @@ public class SongController {
         return "songDetails";
     }
 
+    @PostMapping("/songs/search")
+    public String searchSongs(@RequestParam(name = "albumName")String albumName, Model model){
+        List<Song> founded = songService.searchSongsByAlbum(albumName);
+        model.addAttribute("songs", founded);
+        return "listSongs";
+    }
 
-
+    @PostMapping("/songs/searchYear")
+    public String searchSongsYear(@RequestParam(name = "albumYear")Integer albumYear, Model model){
+        List<Song> founded = songService.searchSongsByReleaseYear(albumYear);
+        model.addAttribute("songs", founded);
+        return "listSongs";
+    }
 
 
 }

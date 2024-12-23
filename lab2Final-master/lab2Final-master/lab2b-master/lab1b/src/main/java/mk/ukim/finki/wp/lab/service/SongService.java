@@ -17,4 +17,8 @@ public interface SongService {
     void deleteById(Long id);
 
     Song save(Song song);
+
+    List<Song> searchSongsByAlbum(String albumName);
+
+    List<Song> searchSongsByReleaseYear(Integer albumYear);
 }

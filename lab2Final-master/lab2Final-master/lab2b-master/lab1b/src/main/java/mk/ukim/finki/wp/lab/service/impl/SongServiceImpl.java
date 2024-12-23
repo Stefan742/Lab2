@@ -43,6 +43,17 @@ public class SongServiceImpl implements SongService {
     public Song save(Song song) {
         return songRepository.save(song);  // Save the song object
     }
+
+    @Override
+    public List<Song> searchSongsByAlbum(String albumName) {
+        return songRepository.findByAlbum_Name(albumName);
+    }
+
+    @Override
+    public List<Song> searchSongsByReleaseYear(Integer albumYear) {
+        return songRepository.findSongsByReleaseYearGreaterThanEqual(albumYear);
+    }
+
     @Override
     public Optional<Song> save(String title, String genre, Integer releaseYear, Album album) {
         // Create a new song and save it

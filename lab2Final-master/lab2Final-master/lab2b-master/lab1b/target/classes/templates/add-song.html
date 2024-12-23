@@ -1,13 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Add new song</title>
+  <meta charset="UTF-8">
+  <title>Add new song</title>
+  <style type="text/css">
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      width: 80%;
+      margin: auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    form {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      display: inline-block;
+    }
+
+    .form-control {
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .form-control:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .btn-primary {
+      background-color: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+      background-color: #2980b9;
+    }
+
+    .back-button {
+      background-color: #e74c3c;
+      margin-left: 10px;
+    }
+
+    .back-button:hover {
+      background-color: #c0392b;
+    }
+
+    .form-container {
+      margin-bottom: 20px;
+    }
+
+    .form-group input,
+    .form-group select {
+      font-size: 16px;
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #2c3e50;
+      margin-top: 30px;
+      text-decoration: underline;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
+<header>
+  <h1>Add New Song</h1>
+</header>
 <form th:method="POST" th:action="@{/songs/add}">
   <input id="trackId" type="hidden" name="trackId"
          th:value="(${song} != null ? ${song.getTrackId()} : '')">
+
   <div class="form-group">
     <label for="title">Song title</label>
     <input type="text"
@@ -18,6 +130,7 @@
            required
            placeholder="Enter song title">
   </div>
+
   <div class="form-group">
     <label for="genre">Genre</label>
     <input type="text"
@@ -27,6 +140,7 @@
            th:value="(${song} != null ? ${song.getGenre()} : '')"
            placeholder="Genre">
   </div>
+
   <div class="form-group">
     <label for="releaseYear">Release year</label>
     <input type="text"
@@ -36,6 +150,7 @@
            th:value="(${song} != null ? ${song.getReleaseYear()} : '')"
            placeholder="Release year">
   </div>
+
   <div class="form-group">
     <label>Album</label>
     <select name="albumId" class="form-control">
@@ -46,14 +161,15 @@
               th:text="${album.name}">
       </option>
       <option th:if="${song} == null"
-      th:each="album : ${albums}"
-        th:value="${album.getId()}"
-        th:text="${album.getName()}">
+              th:each="album : ${albums}"
+              th:value="${album.getId()}"
+              th:text="${album.getName()}">
       </option>
     </select>
   </div>
-  <button id="submit" type="submit" class="btn btn-primary">Submit</button>
-  <a type="button" class="btn btn-primary" href="/songs">Back</a>
+
+  <button id="submit" type="submit" class="btn-primary">Submit</button>
+  <a class="btn-primary back-button" href="/songs">Back</a>
 </form>
 
 </body>

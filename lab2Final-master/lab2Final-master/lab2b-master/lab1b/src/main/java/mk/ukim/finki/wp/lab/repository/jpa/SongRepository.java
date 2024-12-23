@@ -16,4 +16,5 @@ import java.util.Optional;
 public interface SongRepository extends JpaRepository<Song, Long> {
     List<Song> findByAlbum_Name(String name);
     Optional<Song> findAllByTrackId(Long trackId);
+    List<Song> findSongsByReleaseYearGreaterThanEqual(Integer albumYear);
 }
